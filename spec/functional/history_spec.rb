@@ -1,7 +1,7 @@
 require 'minitest_helper'
 require 'git'
 
-describe 'History' do
+describe Gitra::Tracker do
   let(:git) { GitHelper.new }
   let(:tracker) { Gitra::Tracker.new(git.path) }
 
@@ -28,6 +28,28 @@ describe 'History' do
 
     it 'should fail if :since is not given' do
       proc { tracker.commits_on(:master) }.must_raise Git::GitExecuteError
+    end
+  end
+
+  describe 'Shows unmerged commits on "completed" branches' do
+    it 'should contain all unmerged commits' do
+      git.commit_to :master
+      git.branch_off :master => :release
+      git.commit_to :release
+      git.commit_to :master
+      git.merge :release => :master
+      git.commit_to :master
+      missing_commit = git.commit_to :release
+
+      tracker.missing_on(:master, :from => :release).must_equal [missing_commit]
+    end
+
+    it 'should fail if :from is not resolvable' do
+      proc { tracker.missing_on(:master, :from => :neverwhere) }.must_raise Git::GitExecuteError
+    end
+
+    it 'should fail if :from is not given' do
+      proc { tracker.missing_on(:master) }.must_raise Git::GitExecuteError
     end
   end
 
