@@ -8,6 +8,8 @@ class GitHelper
     FileUtils.mkdir_p path
     Dir.chdir path do
       @git = Git.init
+      @git.config('user.name', 'John Testable')
+      @git.config('user.email', 'john.testable@testing.it')
 
       File.new(".gitignore", "w")
       @git.add(".gitignore")
