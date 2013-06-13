@@ -13,10 +13,12 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version = '>= 1.9.3'
   gem.add_dependency 'git'
+  gem.add_dependency 'term-ansicolor'
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'minitest'
 
-  gem.files         = Dir['Rakefile', '{lib,spec}/**/*', 'README*', 'LICENSE*'] & `git ls-files -z`.split("\0")
+  gem.executables   = ['gitra']
+  gem.files         = Dir['Rakefile', '{bin,lib,spec}/**/*', 'README*', 'LICENSE*'] & `git ls-files -z`.split("\0")
   gem.test_files    = gem.files.grep(%r{^(spec)/})
   gem.require_paths = ["lib"]
 end
