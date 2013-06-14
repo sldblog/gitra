@@ -15,11 +15,11 @@ module Gitra
       branches = ([reference_branch] + tracker.branches).uniq!
 
       print "Analysing #{branches.size} branches: "
-      branch_analysis = branches.map do |release_branch|
+      branch_analysis = branches.map do |branch|
         print '.'
-        unmerged = tracker.branch(release_branch).commits_since(reference_branch)
-        behind = tracker.branch(reference_branch).commits_since(release_branch)
-        {:name => release_branch, :behind => behind.size, :unmerged => unmerged.size}
+        unmerged = tracker.branch(branch).commits_since(reference_branch)
+        behind = tracker.branch(reference_branch).commits_since(branch)
+        {:name => branch, :behind => behind.size, :unmerged => unmerged.size}
       end
       puts
 
