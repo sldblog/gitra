@@ -35,6 +35,29 @@ describe Gitra::Tracker do
       tracker.branch(:master).commits_since(:release).must_equal after_branch_off_commits
     end
 
+    it 'should only contain commits with real ancestry' do
+      git.commit_to :master
+      git.branch_off :master => :release
+      2.times { git.commit_to :release }
+      2.times { git.commit_to :master }
+
+      only_on_master = []
+      only_on_master += git.merge(:release => :master)
+      only_on_master << git.commit_to(:master)
+      git.commit_to :release
+
+      tracker.branch(:master).commits_since(:release).must_equal only_on_master
+    end
+
+    it 'should be able to show more than the default log limit (30)' do
+      git.commit_to :master
+      git.branch_off :master => :release
+
+      limit = 40
+      limit.times { git.commit_to :release }
+      tracker.branch(:release).commits_since(:master).size.must_equal limit
+    end
+
     it 'should fail if "since" branch is not resolvable' do
       proc { tracker.branch(:master).commits_since(:new_branch) }.must_raise Git::GitExecuteError
     end
@@ -47,6 +70,15 @@ describe Gitra::Tracker do
       missing_commit = git.commit_to :release
 
       tracker.branch(:master).missing_commits_from(:release).must_equal [missing_commit]
+    end
+
+    it 'should be able to show more than the default log limit (30)' do
+      git.commit_to :master
+      git.branch_off :master => :release
+
+      limit = 40
+      limit.times { git.commit_to :release }
+      tracker.branch(:master).missing_commits_from(:release).size.must_equal limit
     end
 
     it 'should fail if reference is not resolvable' do

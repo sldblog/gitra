@@ -7,9 +7,14 @@ module Gitra
       @git = Git.open(repository)
     end
 
+    def current_branch
+      @git.current_branch
+    end
+
     def branches
       @git.branches.select do |branch|
         name = branch.full.gsub(%r{^remotes/}, '')
+        next if name =~ / -> /
         block_given? ? yield(name) : true
       end.map { |branch| branch.full.gsub(%r{^remotes/}, '') }
     end
@@ -35,13 +40,13 @@ module Gitra
     def commits_since(reference)
       since = @git.object(reference.to_s)
       base = @git.merge_base(@branch, since)
-      @git.lib.log_commits(:between => [base, @branch]).reverse
+      @git.log_ancestry(base, @branch).reverse
     end
 
     def missing_commits_from(reference)
       from = @git.object(reference.to_s)
       base = @git.merge_base(@branch, from)
-      @git.log.between(base, from).collect { |commit| commit.sha }
+      @git.log(2**16).between(base, from).collect { |commit| commit.sha }
     end
   end
 

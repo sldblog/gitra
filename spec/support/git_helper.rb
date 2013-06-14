@@ -43,24 +43,28 @@ class GitHelper
   end
 
   def branch_off(branch_hash)
-    branch_hash.each do |branch_sym, into_sym|
+    branch_hash.collect do |branch_sym, into_sym|
       branch = branch_sym.to_s
       into = into_sym.to_s
 
       @git.checkout branch
       @git.branch(into).create
       @git.checkout 'master'
+
+      @git.object(into).sha
     end
   end
 
   def merge(merge_hash)
-    merge_hash.each do |branch_sym, into_sym|
+    merge_hash.collect do |branch_sym, into_sym|
       branch = branch_sym.to_s
       into = into_sym.to_s
 
       @git.checkout into
       @git.merge branch, "Merge #{branch}"
       @git.checkout 'master'
+
+      @git.object(into).sha
     end
   end
 
