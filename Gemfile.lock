@@ -8,8 +8,8 @@ GEM
   remote: http://rubygems.org/
   specs:
     git (1.2.5)
-    minitest (4.7.0)
-    rake (10.0.3)
+    minitest (5.0.4)
+    rake (10.0.4)
 
 PLATFORMS
   ruby
