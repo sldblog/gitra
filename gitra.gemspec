@@ -5,7 +5,7 @@ Gem::Specification.new do |gem|
   gem.name    = 'gitra'
   gem.version = "#{Gitra::VERSION}.dev"
 
-  gem.summary     = "Git Route Analyzer"
+  gem.summary     = "Git Repository Analyzer"
   gem.description = "Analyze branches and continuity in a git repository."
   gem.authors     = ['David Lantos']
   gem.email       = ['david.lantos@gmail.com']
