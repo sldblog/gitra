@@ -7,6 +7,13 @@ module Gitra
       @git = Git.open(repository)
     end
 
+    def branches
+      @git.branches.select do |branch|
+        name = branch.full.gsub(%r{^remotes/}, '')
+        block_given? ? yield(name) : true
+      end.map { |branch| branch.full.gsub(%r{^remotes/}, '') }
+    end
+
     def branch(branch)
       TrackedBranch.new(@git, branch)
     end

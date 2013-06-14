@@ -9,6 +9,20 @@ describe Gitra::Tracker do
     git.cleanup
   end
 
+  describe 'Selects branches' do
+    it 'should list all branches without block' do
+      git.commit_to :b1
+      git.commit_to :b2
+      tracker.branches.sort.must_equal %w{master b1 b2}.sort
+    end
+
+    it 'should list matching branches with block' do
+      git.commit_to :b1
+      git.commit_to :b2
+      tracker.branches { |name| name =~ /^b/ }.sort.must_equal %w{b1 b2}.sort
+    end
+  end
+
   describe 'Shows commits from merge base' do
     it 'should contain all commits from branching point' do
       git.commit_to :master
