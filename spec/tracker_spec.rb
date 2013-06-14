@@ -14,42 +14,29 @@ describe Gitra::Tracker do
       git.commit_to :master
       git.branch_off :master => :release
       git.commit_to :release
-
-      new_commits = []
-      new_commits << git.commit_to(:master)
-      new_commits << git.commit_to(:master)
-
-      tracker.commits_on(:master, :since => :release).must_equal new_commits
+      after_branch_off_commits = [
+          git.commit_to(:master),
+          git.commit_to(:master)
+      ]
+      tracker.branch(:master).commits_since(:release).must_equal after_branch_off_commits
     end
 
-    it 'should fail if :since is not resolvable' do
-      proc { tracker.commits_on(:master, :since => :new_branch) }.must_raise Git::GitExecuteError
-    end
-
-    it 'should fail if :since is not given' do
-      proc { tracker.commits_on(:master) }.must_raise Git::GitExecuteError
+    it 'should fail if "since" branch is not resolvable' do
+      proc { tracker.branch(:master).commits_since(:new_branch) }.must_raise Git::GitExecuteError
     end
   end
 
-  describe 'Shows unmerged commits on "completed" branches' do
+  describe 'Shows unmerged commits between two branches' do
     it 'should contain all unmerged commits' do
       git.commit_to :master
       git.branch_off :master => :release
-      git.commit_to :release
-      git.commit_to :master
-      git.merge :release => :master
-      git.commit_to :master
       missing_commit = git.commit_to :release
 
-      tracker.missing_on(:master, :from => :release).must_equal [missing_commit]
+      tracker.branch(:master).missing_commits_from(:release).must_equal [missing_commit]
     end
 
-    it 'should fail if :from is not resolvable' do
-      proc { tracker.missing_on(:master, :from => :neverwhere) }.must_raise Git::GitExecuteError
-    end
-
-    it 'should fail if :from is not given' do
-      proc { tracker.missing_on(:master) }.must_raise Git::GitExecuteError
+    it 'should fail if reference is not resolvable' do
+      proc { tracker.branch(:master).missing_commits_from(:neverwhere) }.must_raise Git::GitExecuteError
     end
   end
 
