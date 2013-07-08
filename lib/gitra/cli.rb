@@ -52,8 +52,8 @@ module Gitra
 
       commit_parser.result.each_pair do |type, ids|
         ids.sort.each do |id, commits|
-          description = ''
-          puts "  #{type.to_s.yellow} #{id.to_s.yellow} - #{description}"
+          description = commits.map { |c| c['sha'].slice(0..10) }.join(', ')
+          puts "%28s - %s" % ["#{type.to_s} #{id.to_s}".yellow, description]
         end
       end
     end
