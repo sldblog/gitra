@@ -16,6 +16,10 @@ parser = OptionParser.new do |opts|
     options.command = :analyze
     options.parameter = branch || 'master'
   end
+  opts.on("-l SINCE_REV", "--log SINCE_REV", "Shows the stories and bugs committed since the specified revision.") do |since_rev|
+    options.command = :history
+    options.parameter = since_rev
+  end
 end
 
 begin
@@ -25,7 +29,8 @@ rescue OptionParser::InvalidOption, OptionParser::MissingArgument => e
 end
 
 if options.command
-  Gitra::CLI.send(options.command, options.parameter)
+  cli = Gitra::CLI.new
+  cli.send(options.command, options.parameter)
 else
   puts parser
 end

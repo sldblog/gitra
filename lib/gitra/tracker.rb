@@ -46,7 +46,7 @@ module Gitra
     def missing_commits_from(reference)
       from = @git.object(reference.to_s)
       base = @git.merge_base(@branch, from)
-      @git.log(2**16).between(base, from).collect { |commit| commit.sha }
+      @git.log(2**16).between(base, from)
     end
   end
 

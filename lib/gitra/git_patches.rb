@@ -17,10 +17,11 @@ module Git
     end
 
     def log_ancestry(from, to)
-      arr_opts = ['--pretty=oneline']
+      arr_opts = ['--pretty=raw']
       arr_opts << "#{from.to_s}..#{to.to_s}"
       arr_opts << '--ancestry-path'
-      command_lines('log', arr_opts, true).map { |l| l.split.first }
+      full_log = command_lines('log', arr_opts, true)
+      process_commit_data(full_log)
     end
   end
 end
