@@ -34,7 +34,7 @@ $ git branch
 ```
 
 ```
-$ gitra
+$ gitra -a
 ---- Analyzing branches in relation to master ----
 Analysing 2 branches: ..
 master merged
@@ -44,7 +44,7 @@ master merged
 You can specify any branches as part of the command line:
 
 ```
-$ gitra test
+$ gitra -a test
 ---- Analyzing branches in relation to test ----
 Analysing 2 branches: ..
   test merged

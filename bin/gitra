@@ -2,5 +2,30 @@
 $:.unshift(File.dirname(__FILE__) + '/../lib') unless $:.include?(File.dirname(__FILE__) + '/../lib')
 
 require 'gitra'
-branch = ARGV.first
-Gitra::CLI.analyze branch
+require 'optparse'
+require 'ostruct'
+require 'term/ansicolor'
+
+class String; include Term::ANSIColor; end
+
+options = OpenStruct.new
+parser = OptionParser.new do |opts|
+  opts.banner = "Usage: gitra [options]"
+
+  opts.on("-a [BRANCH]", "--analyse [BRANCH]", "Analyze the repository in relation the the specified branch (defaults to master).") do |branch|
+    options.command = :analyze
+    options.parameter = branch || 'master'
+  end
+end
+
+begin
+  parser.parse!
+rescue OptionParser::InvalidOption, OptionParser::MissingArgument => e
+  $stderr.puts e.to_s.red
+end
+
+if options.command
+  Gitra::CLI.send(options.command, options.parameter)
+else
+  puts parser
+end
