@@ -4,6 +4,14 @@
 
 [![Build Status](https://travis-ci.org/sldblog/gitra.png?branch=master)](https://travis-ci.org/sldblog/gitra)
 
+### Usage
+
+```
+Usage: gitra [options]
+    -a, --analyse [BRANCH]           Analyze the repository in relation the the specified branch (defaults to master).
+    -l, --log SINCE_REV              Shows the stories and bugs committed since the specified revision.
+```
+
 ### Sample use case
 
 Given the following git repository:
