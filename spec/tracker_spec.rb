@@ -32,7 +32,7 @@ describe Gitra::Tracker do
           git.commit_to(:master),
           git.commit_to(:master)
       ]
-      tracker.branch(:master).commits_since(:release).must_equal after_branch_off_commits
+      tracker.branch(:master).commits_since(:release).map { |c| c['sha'] }.must_equal after_branch_off_commits
     end
 
     it 'should only contain commits with real ancestry' do
@@ -46,7 +46,7 @@ describe Gitra::Tracker do
       only_on_master << git.commit_to(:master)
       git.commit_to :release
 
-      tracker.branch(:master).commits_since(:release).must_equal only_on_master
+      tracker.branch(:master).commits_since(:release).map { |c| c['sha'] }.must_equal only_on_master
     end
 
     it 'should be able to show more than the default log limit (30)' do
@@ -69,7 +69,7 @@ describe Gitra::Tracker do
       git.branch_off :master => :release
       missing_commit = git.commit_to :release
 
-      tracker.branch(:master).missing_commits_from(:release).must_equal [missing_commit]
+      tracker.branch(:master).missing_commits_from(:release).map { |c| c.sha }.must_equal [missing_commit]
     end
 
     it 'should be able to show more than the default log limit (30)' do
