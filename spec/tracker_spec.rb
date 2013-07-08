@@ -61,6 +61,10 @@ describe Gitra::Tracker do
     it 'should fail if "since" branch is not resolvable' do
       proc { tracker.branch(:master).commits_since(:new_branch) }.must_raise Git::GitExecuteError
     end
+
+    it 'should fail if "from" branch is not resolvable' do
+      proc { tracker.branch(:neverwhere).commits_since(:master) }.must_raise Git::GitExecuteError
+    end
   end
 
   describe 'Shows unmerged commits between two branches' do
@@ -69,20 +73,7 @@ describe Gitra::Tracker do
       git.branch_off :master => :release
       missing_commit = git.commit_to :release
 
-      tracker.branch(:master).missing_commits_from(:release).map { |c| c.sha }.must_equal [missing_commit]
-    end
-
-    it 'should be able to show more than the default log limit (30)' do
-      git.commit_to :master
-      git.branch_off :master => :release
-
-      limit = 40
-      limit.times { git.commit_to :release }
-      tracker.branch(:master).missing_commits_from(:release).size.must_equal limit
-    end
-
-    it 'should fail if reference is not resolvable' do
-      proc { tracker.branch(:master).missing_commits_from(:neverwhere) }.must_raise Git::GitExecuteError
+      tracker.branch(:release).commits_since(:master).map { |c| c['sha'] }.must_equal [missing_commit]
     end
   end
 
