@@ -7,7 +7,7 @@ module Git
     end
 
     def log_ancestry(from, to)
-      self.lib.log_ancestry(from, to)
+      self.lib.log_ancestry(from, to).map { |c| Git::Object::Commit.new(self, c['sha'], c) }
     end
   end
 

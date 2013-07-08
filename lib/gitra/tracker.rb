@@ -37,10 +37,14 @@ module Gitra
       @branch = branch.to_s
     end
 
-    def commits_since(reference)
+    def commits_since(reference, options = {:ancestry => true})
       since = @git.object(reference.to_s)
       base = @git.merge_base(@branch, since)
-      @git.log_ancestry(base, @branch).reverse
+      if options[:ancestry]
+        @git.log_ancestry(base, @branch).reverse
+      else
+        @git.log(2**16).between(base, @branch).to_a.reverse
+      end
     end
   end
 

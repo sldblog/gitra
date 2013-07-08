@@ -15,10 +15,12 @@ module Gitra
 
     def use(commit)
       @rules.each_pair do |name, patterns|
-        matches = patterns.collect { |p| p.match commit['message'] }
-        matches.each do |m|
-          next unless m
-          (@uses[name][m[1].to_i] ||= []) << commit
+        patterns.each do |pattern|
+          match = pattern.match commit.message
+          next unless match
+
+          id = match[1].to_i
+          (@uses[name][id] ||= []) << commit
         end
       end
     end

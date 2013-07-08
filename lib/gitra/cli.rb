@@ -20,8 +20,8 @@ module Gitra
       print "Analysing #{branches.size} branches: "
       branch_analysis = branches.map do |branch|
         print '.'
-        unmerged = @tracker.branch(branch).commits_since(reference_branch).collect { |c| c['sha'] }
-        behind = @tracker.branch(reference_branch).commits_since(branch).collect { |c| c['sha'] }
+        unmerged = @tracker.branch(branch).commits_since(reference_branch).collect { |c| c.sha }
+        behind = @tracker.branch(reference_branch).commits_since(branch).collect { |c| c.sha }
         {:name => branch, :behind => behind.size, :unmerged => unmerged.size}
       end
       puts
@@ -40,7 +40,7 @@ module Gitra
       current = @tracker.current_branch
 
       puts "---- Analyzing commit history from #{since_revision.yellow} to #{current.yellow} ----"
-      commits = @tracker.branch(current).commits_since(since_revision)
+      commits = @tracker.branch(current).commits_since(since_revision, :ancestry => false)
 
       print "Analysing #{commits.size} commits: "
       commit_parser = Gitra::Parser.new('.gitra-rules.yml')
@@ -52,7 +52,7 @@ module Gitra
 
       commit_parser.result.each_pair do |type, ids|
         ids.sort.each do |id, commits|
-          description = commits.map { |c| c['sha'].slice(0..10) }.join(', ')
+          description = commits.map { |c| c.sha.slice(0..10) }.join(', ')
           puts "%28s - %s" % ["#{type.to_s} #{id.to_s}".yellow, description]
         end
       end
