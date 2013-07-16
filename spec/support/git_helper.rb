@@ -22,7 +22,7 @@ class GitHelper
   end
 
   def cleanup
-    FileUtils.rm_rf(path, secure: true)
+    FileUtils.rm_rf(path, :secure => true)
   end
 
   def commit_to(branch_sym, parent_sym = :master)

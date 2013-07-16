@@ -11,7 +11,7 @@ Gem::Specification.new do |gem|
   gem.email       = ['david.lantos@gmail.com']
   gem.homepage    = 'http://github.com/sldblog/gitra'
 
-  gem.required_ruby_version = '>= 1.9.3'
+  gem.required_ruby_version = '>= 1.8.7'
   gem.add_dependency 'git'
   gem.add_dependency 'term-ansicolor'
   gem.add_development_dependency 'rake'
