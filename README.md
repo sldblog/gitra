@@ -64,3 +64,7 @@ As you can see, the reported information is in line compared to the repository g
 - the other way around if viewed from the `master` branch
 
 This kind of analysis really helps our current team to get on top of the current branching strategy we inherited.
+
+### License
+
+MIT license.

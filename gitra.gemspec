@@ -10,6 +10,7 @@ Gem::Specification.new do |gem|
   gem.authors     = ['David Lantos']
   gem.email       = ['david.lantos@gmail.com']
   gem.homepage    = 'http://github.com/sldblog/gitra'
+  gem.license     = 'MIT'
 
   gem.required_ruby_version = '>= 1.8.7'
   gem.add_dependency 'git'
