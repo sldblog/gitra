@@ -3,7 +3,7 @@ require File.expand_path('../lib/gitra/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.name    = 'gitra'
-  gem.version = "#{Gitra::VERSION}.dev"
+  gem.version = "#{Gitra::VERSION}"
 
   gem.summary     = "Git Repository Analyzer"
   gem.description = "Analyze branches and continuity in a git repository."
