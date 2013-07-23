@@ -10,6 +10,7 @@
 Usage: gitra [options]
     -a, --analyse [BRANCH]           Analyze the repository in relation the the specified branch (defaults to master).
     -l, --log SINCE_REV              Shows the stories and bugs committed since the specified revision.
+    -m, --matching [BRANCHES]        Comma separated list of branches to match
 ```
 
 ### Sample use case
