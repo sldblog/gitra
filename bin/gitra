@@ -9,16 +9,20 @@ require 'term/ansicolor'
 class String; include Term::ANSIColor; end
 
 options = OpenStruct.new
+options.parameters = []
 parser = OptionParser.new do |opts|
   opts.banner = "Usage: gitra [options]"
 
   opts.on("-a [BRANCH]", "--analyse [BRANCH]", "Analyze the repository in relation the the specified branch (defaults to master).") do |branch|
     options.command = :analyze
-    options.parameter = branch || 'master'
+    options.parameters.push branch || 'master'
   end
-  opts.on("-l SINCE_REV", "--log SINCE_REV", "Shows the stories and bugs committed since the specified revision.") do |since_rev|
+  opts.on("-l SINCE_REV", "--log SINCE_REV", "Shows the stories and bugs committed on the current branch since the specified revision.") do |since_rev|
     options.command = :history
-    options.parameter = since_rev
+    options.parameters << since_rev
+  end
+  opts.on("-m [BRANCHES]", "--matching [BRANCHES]", "Comma separated list of branches to match") do |branches|
+    options.parameters.push branches.split(',').map { |b| Regexp.new b } || :all
   end
 end
 
@@ -30,7 +34,7 @@ end
 
 if options.command
   cli = Gitra::CLI.new
-  cli.send(options.command, options.parameter)
+  cli.send(options.command, *options.parameters)
 else
   puts parser
 end

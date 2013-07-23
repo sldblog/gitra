@@ -11,11 +11,14 @@ module Gitra
       @tracker = Tracker.new '.'
     end
 
-    def analyze(reference_branch)
+    def analyze(reference_branch, matching = :all)
       reference_branch ||= @tracker.current_branch
 
       $stdout.puts "---- Analyzing branches in relation to #{reference_branch.yellow} ----"
       branches = ([reference_branch] + @tracker.branches).uniq!
+
+      $stdout.puts "-- Using branches matching #{matching.map {|m| m.source}.join(', ').yellow} --" unless matching == :all
+      branches = branches.select { |branch| matching == :all or matching.inject(false) { |acc, match| acc || branch =~ match } }
 
       $stdout.print "Analysing #{branches.size} branches: "
       branch_analysis = branches.map do |branch|
