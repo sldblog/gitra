@@ -3,6 +3,7 @@
 (The too-soon version)
 
 [![Build Status](https://travis-ci.org/sldblog/gitra.png?branch=master)](https://travis-ci.org/sldblog/gitra)
+[![Gem Version](https://badge.fury.io/rb/gitra.png)](http://badge.fury.io/rb/gitra)
 
 ### Usage
 
