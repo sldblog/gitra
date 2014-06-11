@@ -21,7 +21,7 @@ module Git
       arr_opts << "#{from.to_s}..#{to.to_s}"
       arr_opts << '--ancestry-path'
       full_log = command_lines('log', arr_opts, true)
-      process_commit_data(full_log)
+      process_commit_log_data(full_log)
     end
   end
 end

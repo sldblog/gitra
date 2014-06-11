@@ -13,8 +13,8 @@ Gem::Specification.new do |gem|
   gem.license     = 'MIT'
 
   gem.required_ruby_version = '>= 1.8.7'
-  gem.add_dependency 'git'
-  gem.add_dependency 'term-ansicolor'
+  gem.add_dependency 'git', '~> 1.2.7', '>= 1.2.7'
+  gem.add_dependency 'term-ansicolor', '~> 1.3'
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'minitest'
 
